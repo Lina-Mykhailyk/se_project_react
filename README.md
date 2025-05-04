@@ -1,8 +1,9 @@
-# React + Vite
+# WTWR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the project of the Software Engineering program at TripleTen.
+It was created based on a Figma design.
+This application reads weather data from a Weather API and recommends suitable clothing to the user based on that data.
+At this stage a front end for the application was created using the fundamental principles of React.
+Apaptive design is yet to be implemented.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[The link to GitHub pages](https://lina-mykhailyk.github.io/se_project_react/)
