@@ -1,0 +1,16 @@
+.page {
+  background-color: #f3f3f3;
+  font-family: "Cabinet Grotesk", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.page__wrapper {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
