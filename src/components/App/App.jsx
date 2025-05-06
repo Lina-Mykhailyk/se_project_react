@@ -39,16 +39,18 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!activeModal) return;
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
         e.preventDefault();
         handleCloseClick();
       }
     };
-
     document.addEventListener("keydown", handleEscClose);
-    return () => document.removeEventListener("keydown", handleEscClose);
-  }, []);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal]);
 
   return (
     <div className="page">
@@ -60,7 +62,7 @@ function App() {
       <ModalWithForm
         title="New garment"
         btnText="Add garment"
-        activeModal={activeModal}
+        isOpen={activeModal === "add-clothes"}
         onClose={handleCloseClick}
       >
         <label htmlFor="name" className="modal__label">
@@ -119,7 +121,7 @@ function App() {
         </fieldset>
       </ModalWithForm>
       <ItemModal
-        activeModal={activeModal}
+        isOpen={activeModal === "preview-card"}
         card={selectedCard}
         onClose={handleCloseClick}
       />

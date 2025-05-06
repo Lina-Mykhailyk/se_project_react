@@ -1,6 +1,6 @@
 import "./ItemModal.css";
 
-function ItemModal({ activeModal, onClose, card }) {
+function ItemModal({ isOpen, onClose, card }) {
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("modal")) {
       onClose();
@@ -9,9 +9,7 @@ function ItemModal({ activeModal, onClose, card }) {
 
   return (
     <div
-      className={`modal ${
-        activeModal === "preview-card" ? "modal_opened" : ""
-      }`}
+      className={`modal ${isOpen ? "modal_opened" : ""}`}
       onClick={handleOverlayClick}
     >
       <div className="modal__content modal__content_type_image">
