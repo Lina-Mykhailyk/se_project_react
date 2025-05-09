@@ -1,12 +1,12 @@
 .card {
   width: 323px;
+  height: 326px;
   border: 1px solid #0000004d;
   border-radius: 19px;
   position: relative;
   display: flex;
   justify-content: center;
   overflow: hidden;
-  gap: 20px;
 }
 
 .card__name {
@@ -24,4 +24,6 @@
 
 .card__image {
   width: 100%;
+  object-fit: cover;
+  object-position: center;
 }

@@ -1,7 +1,7 @@
 .modal__content_type_image {
-  padding: 0;
   border-radius: 16px;
   overflow: hidden;
+  max-width: 498px;
 }
 
 .modal__close-btn_type_image {
@@ -10,17 +10,47 @@
   background-image: url(../../assets/close-preview.svg);
 }
 
-.modal__description {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;
-  padding: 20px 0 32px 32px;
+.modal__image {
+  width: 100%;
+  height: 498px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .modal__caption {
+  padding: 20px 32px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modal__card-name {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
   margin: 0 0 12px;
 }
 
 .modal__weather {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
   margin: 0;
+}
+
+.modal__delete-btn {
+  color: #ff4d00;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: opacity 0.3s;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.modal__delete-btn:hover {
+  opacity: 0.7;
 }

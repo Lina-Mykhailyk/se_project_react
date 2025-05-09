@@ -5,18 +5,26 @@ export const getCurrentWeather = ({ latitude, longitude }, APIkey) => {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Error: $(res.status)`);
+      return Promise.reject(`Error: ${res.status}`);
     }
   });
 };
 
 export const filterWeatherData = (data) => {
-  const result = {};
-  result.city = data.name;
-  result.temp = { F: data.main.temp };
-  result.type = getWeatherType(result.temp.F);
-  result.condition = data.weather[0].main.toLowerCase();
-  result.isDay = isDay(data.sys, Date.now());
+  const fahrenheit = Math.round(data.main.temp);
+  const celsius = Math.round(((fahrenheit - 32) * 5) / 9);
+
+  const result = {
+    city: data.name,
+    temp: {
+      F: fahrenheit,
+      C: celsius,
+    },
+    type: getWeatherType(fahrenheit),
+    condition: data.weather[0].main.toLowerCase(),
+    isDay: isDay(data.sys, Date.now()),
+  };
+
   return result;
 };
 

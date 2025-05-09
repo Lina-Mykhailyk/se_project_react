@@ -1,0 +1,9 @@
+.profile {
+  display: flex;
+  padding-top: 19px;
+  gap: 116px;
+}
+
+.profile__sidebar {
+  width: 229px;
+}

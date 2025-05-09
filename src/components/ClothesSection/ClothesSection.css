@@ -1,0 +1,42 @@
+.clothes-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.clothes-section__header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.clothes-section__title {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.clothes-section__add-btn {
+  color: #00000099;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: opacity 0.3s;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.clothes-section__add-btn:hover {
+  opacity: 0.7;
+}
+
+.clothes-section__cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  gap: 20px;
+}
