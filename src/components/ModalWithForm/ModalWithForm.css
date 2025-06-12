@@ -1,42 +1,7 @@
-.modal {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  visibility: hidden;
-  z-index: 999;
-}
-
-.modal_opened {
-  display: flex;
-  visibility: visible;
-}
-
-.modal__content {
-  background-color: #fff;
-  position: relative;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.modal__content_type_form {
+.modal__container_type_form {
   padding: 28px 28px 36px;
   border-radius: 20px;
   max-width: 496px;
-}
-
-.modal__close-btn {
-  position: absolute;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: contain;
-  border: none;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  padding: 0;
 }
 
 .modal__close-btn_type_form {

@@ -1,33 +1,28 @@
+import { useContext } from "react";
+import Modal from "../Modal/Modal";
 import "./ItemModal.css";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function ItemModal({ isOpen, onClose, card, openConfirmationModal }) {
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("modal")) {
-      onClose();
-    }
-  };
+  const currentUser = useContext(CurrentUserContext);
 
   const handleDeleteClick = () => {
     openConfirmationModal(card);
   };
 
+  if (!card) return null;
+
+  const isOwn = card.owner === currentUser?._id;
+
   return (
-    <div
-      className={`modal ${isOpen ? "modal_opened" : ""}`}
-      onClick={handleOverlayClick}
-    >
-      <div className="modal__content modal__content_type_image">
-        <button
-          onClick={onClose}
-          type="button"
-          className="modal__close-btn modal__close-btn_type_image"
-        ></button>
-        <img src={card.imageUrl} alt={card.name} className="modal__image" />
-        <div className="modal__caption">
-          <div className="modal__description">
-            <h2 className="modal__card-name">{card.name}</h2>
-            <p className="modal__weather">Weather: {card.weather}</p>
-          </div>
+    <Modal name="image" isOpen={isOpen} onClose={onClose}>
+      <img src={card.imageUrl} alt={card.name} className="modal__image" />
+      <div className="modal__caption">
+        <div>
+          <h2 className="modal__card-name">{card.name}</h2>
+          <p className="modal__weather">Weather: {card.weather}</p>
+        </div>
+        {isOwn && (
           <button
             onClick={handleDeleteClick}
             type="button"
@@ -35,9 +30,9 @@ function ItemModal({ isOpen, onClose, card, openConfirmationModal }) {
           >
             Delete item
           </button>
-        </div>
+        )}
       </div>
-    </div>
+    </Modal>
   );
 }
 

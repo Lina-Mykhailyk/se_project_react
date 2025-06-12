@@ -1,0 +1,34 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  z-index: 999;
+}
+
+.modal_opened {
+  display: flex;
+  visibility: visible;
+}
+
+.modal__container {
+  background-color: #fff;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.modal__close-btn {
+  position: absolute;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  padding: 0;
+}
