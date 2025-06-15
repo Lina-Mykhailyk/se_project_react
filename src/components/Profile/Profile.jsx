@@ -1,21 +1,25 @@
-import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
+import ClothesSection from "../ClothesSection/ClothesSection";
 import "./Profile.css";
 
-function Profile({ onCardClick, clothingItems, onAddClick }) {
+function Profile({
+  onCardClick,
+  clothingItems,
+  onAddClick,
+  onEditProfile,
+  onLogOut,
+}) {
   return (
-    <div className="profile">
-      <section className="profile__sidebar">
-        <SideBar />
-      </section>
-      <section className="profile__clothes-section">
-        <ClothesSection
-          onCardClick={onCardClick}
-          clothingItems={clothingItems}
-          onAddClick={onAddClick}
-        />
-      </section>
-    </div>
+    <section className="profile">
+      <div className="profile__sidebar">
+        <SideBar onEditProfile={onEditProfile} onLogOut={onLogOut} />
+      </div>
+      <ClothesSection
+        clothingItems={clothingItems}
+        onCardClick={onCardClick}
+        onAddClick={onAddClick}
+      />
+    </section>
   );
 }
 

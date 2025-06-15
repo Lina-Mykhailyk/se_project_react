@@ -1,30 +1,34 @@
 import { useContext } from "react";
-import avatar from "../../assets/avatar.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import "./SideBar.css";
 
-function SideBar() {
+function SideBar({ onEditProfile, onLogOut }) {
   const currentUser = useContext(CurrentUserContext);
 
-  const displayAvatar = currentUser?.avatar || "";
-  const displayName = currentUser?.name || "";
-
-  const avatarElement = displayAvatar ? (
-    <img
-      className="sidebar__avatar"
-      src={displayAvatar}
-      alt={`${displayName}'s avatar`}
-    />
-  ) : (
-    <div className="sidebar__avatar sidebar__avatar_placeholder">
-      {displayName ? displayName.charAt(0).toUpperCase() : "?"}
-    </div>
-  );
+  const getInitial = (name) => name?.[0]?.toUpperCase() || "?";
 
   return (
     <div className="sidebar">
-      {avatarElement}
-      <p className="sidebar__username">{displayName}</p>
+      {currentUser?.avatar ? (
+        <img
+          className="sidebar__avatar"
+          src={currentUser.avatar}
+          alt={currentUser.name}
+        />
+      ) : (
+        <div className="sidebar__avatar-placeholder">
+          {getInitial(currentUser?.name)}
+        </div>
+      )}
+      <p className="sidebar__username">{currentUser?.name}</p>
+
+      <button className="sidebar__edit-btn" onClick={onEditProfile}>
+        Change profile data
+      </button>
+
+      <button className="sidebar__signout-btn" onClick={onLogOut}>
+        Log out
+      </button>
     </div>
   );
 }

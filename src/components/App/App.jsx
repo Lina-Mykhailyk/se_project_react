@@ -12,9 +12,17 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
-import { getItems, addItem, deleteItem } from "../../utils/api";
+import {
+  getItems,
+  addItem,
+  deleteItem,
+  updateUser,
+  addCardLike,
+  removeCardLike,
+} from "../../utils/api";
 import { signUp, signIn, checkToken } from "../../utils/auth";
 import { getCurrentWeather, filterWeatherData } from "../../utils/weatherApi";
 import { coordinates, APIkey } from "../../utils/constants";
@@ -36,12 +44,27 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   const isAddItemModalOpen = activeModal === "add-clothes";
   const isPreviewModalOpen = activeModal === "preview-card";
   const isDeleteConfirmOpen = activeModal === "confirm-delete";
   const isRegisterModalOpen = activeModal === "register";
   const isLoginModalOpen = activeModal === "login";
+  const isEditProfileModalOpen = activeModal === "edit-profile";
+
+  const handleEditProfileClick = () => setActiveModal("edit-profile");
+
+  const handleUpdateUser = ({ name, avatar }) => {
+    setIsLoading(true);
+    updateUser({ name, avatar }, localStorage.getItem("jwt"))
+      .then((updatedUser) => {
+        setCurrentUser(updatedUser);
+        handleCloseClick();
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  };
 
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
@@ -121,6 +144,31 @@ function App() {
       .finally(() => setIsLoadingAuth(false));
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+  };
+
+  const handleCardLike = ({ id, isLiked }) => {
+    const token = localStorage.getItem("jwt");
+
+    if (!token) {
+      console.log("User not authorized");
+      return;
+    }
+
+    const likeAction = isLiked ? removeCardLike : addCardLike;
+
+    likeAction(id, token)
+      .then((updatedCard) => {
+        setClothingItems((cards) =>
+          cards.map((item) => (item._id === id ? updatedCard : item))
+        );
+      })
+      .catch((err) => console.error("Failed to update like:", err));
+  };
+
   useEffect(() => {
     getCurrentWeather(coordinates, APIkey)
       .then((data) => {
@@ -145,10 +193,12 @@ function App() {
           setCurrentUser(user);
           setIsLoggedIn(true);
         })
-        .catch((err) => {
-          console.error("Token check failed:", err);
+        .catch(() => {
           localStorage.removeItem("jwt");
-        });
+        })
+        .finally(() => setIsAuthChecked(true));
+    } else {
+      setIsAuthChecked(true);
     }
   }, []);
 
@@ -175,18 +225,24 @@ function App() {
                     weatherData={weatherData}
                     onCardClick={handleCardClick}
                     clothingItems={clothingItems}
+                    onCardLike={handleCardLike}
                   />
                 }
               />
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <ProtectedRoute
+                    isLoggedIn={isLoggedIn}
+                    isAuthChecked={isAuthChecked}
+                  >
                     <main className="main">
                       <Profile
                         onCardClick={handleCardClick}
                         clothingItems={clothingItems}
                         onAddClick={handleAddClick}
+                        onEditProfile={handleEditProfileClick}
+                        onLogOut={handleLogOut}
                       />
                     </main>
                   </ProtectedRoute>
@@ -223,6 +279,13 @@ function App() {
               handleCardDelete(cardToDelete);
               setCardToDelete(null);
             }}
+            isLoading={isLoading}
+          />
+
+          <EditProfileModal
+            isOpen={isEditProfileModalOpen}
+            onClose={handleCloseClick}
+            onUpdateUser={handleUpdateUser}
             isLoading={isLoading}
           />
 

@@ -32,4 +32,46 @@ function deleteItem(_id, token) {
   });
 }
 
-export { getItems, addItem, deleteItem };
+function updateUser({ name, avatar }, token) {
+  const body = { name };
+
+  if (avatar && avatar.trim()) {
+    body.avatar = avatar.trim();
+  }
+
+  return fetch(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  }).then(checkResponse);
+}
+
+function addCardLike(cardId, token) {
+  return request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+function removeCardLike(cardId, token) {
+  return request(`${baseUrl}/items/${cardId}/likes`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export {
+  getItems,
+  addItem,
+  deleteItem,
+  updateUser,
+  addCardLike,
+  removeCardLike,
+};
