@@ -1,7 +1,15 @@
 const baseUrl = "http://localhost:3001";
 
 function checkResponse(res) {
-  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
+  if (res.ok) {
+    return res.json();
+  }
+
+  return res.json().then((data) => {
+    const error = new Error(data.message || `Error: ${res.status}`);
+    error.status = res.status;
+    throw error;
+  });
 }
 
 export function signUp({ name, avatar, email, password }) {

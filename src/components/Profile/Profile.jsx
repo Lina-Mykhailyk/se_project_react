@@ -8,6 +8,7 @@ function Profile({
   onAddClick,
   onEditProfile,
   onLogOut,
+  onCardLike,
 }) {
   return (
     <section className="profile">
@@ -18,6 +19,7 @@ function Profile({
         clothingItems={clothingItems}
         onCardClick={onCardClick}
         onAddClick={onAddClick}
+        onCardLike={onCardLike}
       />
     </section>
   );

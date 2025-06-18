@@ -45,6 +45,8 @@ function App() {
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [addItemError, setAddItemError] = useState("");
 
   const isAddItemModalOpen = activeModal === "add-clothes";
   const isPreviewModalOpen = activeModal === "preview-card";
@@ -57,12 +59,16 @@ function App() {
 
   const handleUpdateUser = ({ name, avatar }) => {
     setIsLoading(true);
+    setProfileError("");
+
     updateUser({ name, avatar }, localStorage.getItem("jwt"))
       .then((updatedUser) => {
         setCurrentUser(updatedUser);
         handleCloseClick();
       })
-      .catch(console.error)
+      .catch((err) => {
+        setProfileError(err.message || "Failed to update profile");
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -89,16 +95,22 @@ function App() {
 
   const handleCloseClick = () => {
     setActiveModal("");
+    setProfileError("");
   };
 
   const handleAddItemSubmit = ({ name, weather, imageUrl }) => {
     setIsLoading(true);
+    setAddItemError("");
     addItem({ name, weather, imageUrl }, localStorage.getItem("jwt"))
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         handleCloseClick();
       })
-      .catch(console.error)
+      .catch((err) => {
+        setAddItemError(
+          err.message || "Failed to add item. Please check the image URL."
+        );
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -127,20 +139,23 @@ function App() {
 
   const handleLogin = ({ email, password }) => {
     setIsLoadingAuth(true);
-    signIn({ email, password })
+    return signIn({ email, password })
       .then((res) => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
-          checkToken(res.token).then((user) => {
+          return checkToken(res.token).then((user) => {
             setCurrentUser(user);
             setIsLoggedIn(true);
             handleCloseClick();
           });
         } else {
-          throw new Error("Token missing from response");
+          return Promise.reject(new Error("Token missing from response"));
         }
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error("Login failed:", err);
+        return Promise.reject(err);
+      })
       .finally(() => setIsLoadingAuth(false));
   };
 
@@ -243,6 +258,7 @@ function App() {
                         onAddClick={handleAddClick}
                         onEditProfile={handleEditProfileClick}
                         onLogOut={handleLogOut}
+                        onCardLike={handleCardLike}
                       />
                     </main>
                   </ProtectedRoute>
@@ -258,6 +274,7 @@ function App() {
             onAddItem={handleAddItemSubmit}
             onCloseModal={handleCloseClick}
             isLoading={isLoading}
+            serverError={addItemError}
           />
 
           <ItemModal
@@ -284,9 +301,13 @@ function App() {
 
           <EditProfileModal
             isOpen={isEditProfileModalOpen}
-            onClose={handleCloseClick}
+            onClose={() => {
+              setProfileError("");
+              handleCloseClick();
+            }}
             onUpdateUser={handleUpdateUser}
             isLoading={isLoading}
+            serverError={profileError}
           />
 
           <RegisterModal

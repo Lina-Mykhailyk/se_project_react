@@ -9,9 +9,16 @@
   overflow: hidden;
 }
 
-.card__name {
+.card__header {
   position: absolute;
   top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.card__name {
   margin: 0;
   font-size: 16px;
   line-height: 1.2;
@@ -26,4 +33,18 @@
   width: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.card__like-button {
+  width: 18px;
+  height: 15px;
+  background: url("../../assets/like.svg") center no-repeat;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.card__like-button_active {
+  background-image: url("../../assets/like-active.svg");
 }

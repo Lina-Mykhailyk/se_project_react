@@ -1,23 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useForm } from "../../hooks/useForm";
 import "./AddItemModal.css";
 
-const AddItemModal = ({ isOpen, onAddItem, onCloseModal, isLoading }) => {
-  const { values, handleChange, setValues } = useForm({
+const AddItemModal = ({
+  isOpen,
+  onAddItem,
+  onCloseModal,
+  isLoading,
+  serverError,
+}) => {
+  const {
+    values,
+    errors,
+    isValid,
+    touched,
+    isSubmitted,
+    handleChange,
+    handleBlur,
+    resetForm,
+    setFormSubmitted,
+  } = useForm({
     name: "",
     imageUrl: "",
-    weather: "",
+    weather: "hot",
   });
+
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
-      setValues({ name: "", imageUrl: "", weather: "" });
+      resetForm({ name: "", imageUrl: "", weather: "hot" }, {}, false);
+      setFormError("");
     }
-  }, [isOpen, setValues]);
+  }, [isOpen, resetForm]);
+
+  useEffect(() => {
+    setFormError(serverError || "");
+  }, [serverError]);
+
+  const handleInputChange = (e) => {
+    if (formError) setFormError("");
+    handleChange(e);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormSubmitted();
+    if (!isValid) return;
     onAddItem(values);
   };
 
@@ -29,39 +59,54 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal, isLoading }) => {
       btnText={isLoading ? "Saving..." : "Add garment"}
       onClose={onCloseModal}
       onSubmit={handleSubmit}
+      isSubmitDisabled={!isValid}
     >
       <label htmlFor="name" className="modal__label">
-        Name
+        {(touched.name || isSubmitted) && errors.name ? (
+          <span className="modal__error-text">{errors.name}</span>
+        ) : (
+          "Name"
+        )}
         <input
           type="text"
-          className="modal__input"
+          className={`modal__input ${
+            (touched.name || isSubmitted) && errors.name
+              ? "modal__input_type_error"
+              : ""
+          }`}
           id="name"
           name="name"
           placeholder="Name"
           value={values.name}
-          onChange={handleChange}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
           required
           minLength="1"
           maxLength="30"
-          aria-describedby="name-error"
         />
-        <span className="modal__error" id="name-error"></span>
       </label>
 
       <label htmlFor="imageUrl" className="modal__label">
-        Image
+        {(touched.imageUrl || isSubmitted) && errors.imageUrl ? (
+          <span className="modal__error-text">{errors.imageUrl}</span>
+        ) : (
+          "Image URL"
+        )}
         <input
           type="url"
-          className="modal__input"
+          className={`modal__input ${
+            (touched.imageUrl || isSubmitted) && errors.imageUrl
+              ? "modal__input_type_error"
+              : ""
+          }`}
           id="imageUrl"
           name="imageUrl"
           placeholder="Image URL"
           value={values.imageUrl}
-          onChange={handleChange}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
           required
-          aria-describedby="url-error"
         />
-        <span className="modal__error" id="url-error"></span>
       </label>
 
       <div className="modal__radio-btns">
@@ -79,13 +124,15 @@ const AddItemModal = ({ isOpen, onAddItem, onCloseModal, isLoading }) => {
               name="weather"
               value={type}
               checked={values.weather === type}
-              onChange={handleChange}
+              onChange={handleInputChange}
               required
             />
             <span>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
           </label>
         ))}
       </div>
+
+      {formError && <span className="modal__server-error">{formError}</span>}
     </ModalWithForm>
   );
 };

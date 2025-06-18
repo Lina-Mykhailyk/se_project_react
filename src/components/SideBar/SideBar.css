@@ -1,4 +1,4 @@
-.sidebar {
+.sidebar__profile {
   display: flex;
   gap: 16px;
   align-items: center;
@@ -16,4 +16,29 @@
   line-height: 1.2;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.sidebar__buttons {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar__button {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar__button:hover {
+  opacity: 0.7;
 }

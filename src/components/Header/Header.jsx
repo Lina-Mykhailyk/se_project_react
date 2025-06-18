@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 import "./Header.css";
 import logo from "../../assets/logo.svg";
-import avatarDefault from "../../assets/avatar.svg";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Header({
   onAddClick,
@@ -60,7 +59,7 @@ function Header({
             Sign up
           </button>
           <button className="header__auth-btn" onClick={onSignInClick}>
-            Sign in
+            Log in
           </button>
         </div>
       )}
