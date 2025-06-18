@@ -7,3 +7,4 @@ At this stage a front end for the application was created using the fundamental 
 Apaptive design is yet to be implemented.
 
 [The link to GitHub pages](https://lina-mykhailyk.github.io/se_project_react/)
+[The link to the backend repo](https://github.com/Lina-Mykhailyk/se_project_express)
