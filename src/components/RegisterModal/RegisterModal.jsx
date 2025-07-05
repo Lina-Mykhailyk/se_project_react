@@ -85,6 +85,7 @@ const RegisterModal = ({ isOpen, onClose, onRegister, isLoading }) => {
         <input
           type="password"
           name="password"
+          minLength="8"
           className={`modal__input ${
             (touched.password || isSubmitted) && errors.password
               ? "modal__input_type_error"

@@ -129,11 +129,13 @@ function App() {
 
   const handleRegister = ({ name, avatar, email, password }) => {
     setIsLoadingAuth(true);
-    signUp({ name, avatar, email, password })
+    return signUp({ name, avatar, email, password })
       .then(() => {
-        handleLogin({ email, password });
+        return handleLogin({ email, password });
       })
-      .catch(console.error)
+      .catch((err) => {
+        throw err;
+      })
       .finally(() => setIsLoadingAuth(false));
   };
 
